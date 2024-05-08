@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% comment %} 
     author: Michaela Jalakšová
@@ -55,7 +56,7 @@
                 </p>
                 
                 <div class="text-center"> <!-- TODO Pic-->
-                    <img style="width:50%;" src="../static/app/images/owasp-logo.png" alt="The logo of OWASP.">
+                    <img style="width:50%;" src="{% static 'app/images/owasp-logo.png' %}" alt="The logo of OWASP.">
                 </div>
                 <br>
                 
@@ -81,7 +82,7 @@
                 </p>
                 <!-- TODO Pic-->
                 <div class="text-center"> 
-                    <img style="width:40%;" src="../static/app/images/nist-logo.png" alt="The logo of NIST.">
+                    <img style="width:40%;" src="{% static 'app/images/nist-logo.png' %}" alt="The logo of NIST.">
                 </div>
                 <br><br>
                 
@@ -96,7 +97,7 @@
                 </p>
                 <!-- TODO Pic-->
                 <div class="text-center">
-                    <img style="width:40%;" src="../static/app/images/cwe-logo-nobg.png" alt="The logo of CWE.">
+                    <img style="width:40%;" src="{% static 'app/images/cwe-logo-nobg.png' %}" alt="The logo of CWE.">
                 </div>
                 <br><br>
                 
@@ -115,7 +116,7 @@
                 </p>
                 <!-- TODO Pic-->
                 <div class="text-center"> 
-                    <img style="width:30%;" src="../static/app/images/cert-logo-nobg.png" alt="The logo of CERT.">
+                    <img style="width:30%;" src="{% static 'app/images/cert-logo-nobg.png' %}" alt="The logo of CERT.">
                 </div>
             </div>
             <br><br>

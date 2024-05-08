@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% comment %} 
     author: Michaela Jalakšová
@@ -37,7 +38,7 @@
                 </p>
                 
                 <div class="text-center"> 
-                    <img style="width:50%;" src="../static/app/images/message-digest-wo-provider.png" 
+                    <img style="width:50%;" src="{% static 'app/images/message-digest-wo-provider.png' %}"
                          alt="Message digest without a provider.">
                     <p>Request SHA-256 Message Digest Implementation Without Specifying Provider</p>
                 </div>
@@ -88,7 +89,7 @@
                 </p>
                 
                 <div class="text-center"> 
-                    <img style="width:50%;" src="../static/app/images/auth-login-modules.png" 
+                    <img style="width:50%;" src="{% static 'app/images/auth-login-modules.png'%}" 
                          alt="Authentication login modules.">
                     <p>Authentication Login Modules Plugging into the Authentication Framework</p>
                 </div>

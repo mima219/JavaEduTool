@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% comment %} 
     author: Michaela Jalakšová
@@ -26,7 +27,7 @@
             </p>
             
             <div class="text-center"> 
-                <img style="width:90%;" src="../static/app/images/deserialization-diagram.jpg" 
+                <img style="width:90%;" src="{% static 'app/images/deserialization-diagram.jpg'%}" 
                      alt="Deserialization Diagram">
             </div>
             
