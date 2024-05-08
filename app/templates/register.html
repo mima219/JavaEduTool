@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Registration |
+{% endblock %}
+
+{% block content %}
+    <br>
+    <div class="d-flex flex-column justify-content-center align-items-center">
+        <form method="POST" class="mt-3 form-register form-bg form-width-max">
+            {% csrf_token %}
+
+            <fieldset class="form-group">
+                <legend class="border-bottom border-dark-subtle mb-4">Please Create your Account</legend>
+                {{ form|crispy }}
+            </fieldset>
+
+            <div class="form-group">
+                <button class="btn btn-hover" type="submit">Sign Up</button>
+            </div>
+        </form>
+        
+        <div class="border-top mt-3 form-width-max">
+            <small class="text-muted">
+                Already have an account?
+                <a class="ml-2"  style="color:#e75516" href="{% url 'login' %}">Sign In</a>
+            </small>
+        </div>
+        <br>
+    </div>
+{% endblock %}

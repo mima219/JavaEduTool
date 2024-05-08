@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Basics of Java security |
+{% endblock %}
+
+{% block content %}
+    <br>
+    <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+        <div class="articles" id="guidelines">
+            <div id="overview">
+                <h2>Basics of Java security</h2>
+                <p> The aim of this section is to delve into the basics of Java security. The foundation of security 
+                    in Java is established right from language features. By being a statically typed language, 
+                    Java decreases the likelihood of encountering type-related errors that could be identified
+                    at run-time. Another feature that Java provides is the usage of the different access modifiers,
+                    such as public, private and protected, in order to regulate the accessibility of fields, methods,
+                    and classes. 
+                </p>
+                <p> Java’s security model is built on a multi-layered architecture designed to protect applications
+                    and their runtime environments. There are several APIs that let programmers incorporate security
+                    functions into the application code. The APIs address security areas such as cryptography, authentication,
+                    secure communication, public key infrastructure and access control.
+                </p>
+                <h4>Security Provider</h4>
+                <p>The <code>java.security.Provider</code> class serves as a container for defining a security provider. This class 
+                    specifies the name of the provider and enumerates the security services it can provide. It is 
+                    possible to have multiple providers configured simultaneously, with an order of preference. 
+                    When a security service is requested, the provider with the highest priority that supports
+                    that service will be chosen.
+                </p>
+                
+                <div class="text-center"> 
+                    <img style="width:50%;" src="../static/app/images/message-digest-wo-provider.png" 
+                         alt="Message digest without a provider.">
+                    <p>Request SHA-256 Message Digest Implementation Without Specifying Provider</p>
+                </div>
+                
+                <h4>Cryptography</h4>
+                <p> The Java platform provides robust support for cryptographic operations through its 
+                    Java Cryptographic Architecture (JCA) framework. It contains APIs that are able to 
+                    implement numerous cryptographic services like message digest algorithms, data encryption, 
+                    digital signatures, key generators, and other cryptographic functions. These cryptographic 
+                    functions are provider-based, which means they can support various cryptography implementations 
+                    that can work together seamlessly. Java comes with built-in providers for the most used cryptography
+                    algorithms such as RSA, DSA, AES, and SHA-2, among others.
+                </p>
+                
+                <h4>Public Key Infrastructure</h4>
+                <p> Public Key Infrastructure (PKI) refers to a framework that allows secure exchange of information 
+                    using public key cryptography. It connects identities, like people or organizations, to digital 
+                    certificates and ensures these certificates are legitimate. PKI includes keys, certificates, 
+                    encryption, and trusted Certification Authorities (CAs) who create and digitally sign certificates.
+                    The classes associated with Public Key Infrastructure (PKI) can be found in the 
+                    <code>java.security</code> and <code>java.security.cert</code> packages.
+                </p>
+                <p> The Java platform provides a set of APIs that simplify the process of generating, storing, 
+                    and verifying digital certificates. The <code>java.security.KeyStore</code> class serves as secure storage 
+                    for cryptographic keys and trusted certificates. Java also provides the <code>java.security.cert.CertStore</code>
+                     class, which represents a public and potentially vast repository of generally untrusted certificates 
+                    and revocation lists. Furthermore, it includes a special built-in key store, <code>cacerts</code>, which contains 
+                    certificates from well-known Certification Authorities (CA).
+                </p>
+                <p> There are two integrated tools available for managing keys, certificates, and key stores.
+                    <code>Keytool</code> is used for creating and managing cryptographic keys and certificates. 
+                    The <code>Jarsigner</code> is a tool used for signing and verifying JAR files to ensure 
+                    their integrity and authenticity.
+                </p>
+                
+                <h4>Authentication</h4>
+                <p> Authentication is the process of determining the identity of a user. 
+                    In the context of the Java runtime environment, it is the process of identifying 
+                    the user of an executing Java program.
+                </p>
+                <p> The Java platform offers a set of APIs that allow applications to perform user 
+                    authentication through pluggable login modules. The <code>LoginContext</code> class is called 
+                    upon by applications, which then points to a configuration specifying the login 
+                    module to be used for authentication. Since applications interact exclusively 
+                    with the <code>LoginContext</code> API, they are not tied to any specific plug-in modules. 
+                    This allows for the seamless integration of new or updated modules without 
+                    any need to alter the application.
+                </p>
+                
+                <div class="text-center"> 
+                    <img style="width:50%;" src="../static/app/images/auth-login-modules.png" 
+                         alt="Authentication login modules.">
+                    <p>Authentication Login Modules Plugging into the Authentication Framework</p>
+                </div>
+                <p>The Java platform includes pre-installed login modules located within 
+                    the <code>com.sun.security.auth.module</code> package. The <code>Krb5LoginModule</code> is 
+                    designed for authentication based on the Kerberos protocol. 
+                    The <code>JndiLoginModule</code> is employed for username and password authentication, 
+                    using LDAP or NIS databases. Lastly, the <code>KeyStoreLoginModule</code> is used 
+                    for cryptographic key-based authentication.
+                </p>
+                
+                <h4>Communication Security</h4>
+                <p> The transmission of data over the network is vulnerable to numerous attack vectors. 
+                    For instance, an attacker could intercept the network and view our data packets as 
+                    they are being transmitted. The Java platform offers API support and provider implementations 
+                    for multiple standard secure communication protocols.
+                </p>
+                <p> Transport Layer Security (TLS) and Secure Sockets Layer (SSL) are cryptographic protocols 
+                    that establish a secure connection between two communicating channels. Java provides 
+                    support for SSL/TLS through classes such as <code>SSLSocket</code> and <code>SSLEngine</code>, which are available
+                    in the <code>javax.net.ssl</code> package.
+                    
+                </p>
+                <p> Simple Authentication and Security Layer (SASL) is a framework for adding authentication 
+                    support that allows clients and servers to define how the authentication data is going to
+                    be exchanged. The <code>java.security.sasl</code> module defines classes and interfaces for applications
+                    that use SASL mechanisms. The <code>javax.security.sasl.Sasl</code> class is used to create <code>SaslClient</code> 
+                    and <code>SaslServer</code> objects.
+                </p>
+                <p>The Java platform includes an API called GSS-API (Generic Security Service 
+                    Application Programming Interface), found in the <code>java.security.jgss</code> module. 
+                    GSS-API provides developers with uniform access to security services using different security
+                    methods. Currently, Java's GSS-API only supports Kerberos v5.
+                </p>
+                
+                <h4>Access Control</h4>
+                <p> The access control architecture implemented in the Java programming language is responsible 
+                    for safeguarding sensitive resources and application code from unauthorized access. 
+                    Access control checks are enforced by <code>SecurityManager</code> which is represented by 
+                    the <code>java.lang.SecurityManager</code> class.
+                </p>
+                <p>Permissions in Java represent access to a system resource. When a class is loaded in the runtime,
+                    default permissions are automatically granted to the class using the 
+                    <code>java.security.Permission</code> object. In addition to these default permissions, 
+                    additional ones can be granted to a class through security policies. The security policy
+                    is implemented through the <code>java.security.Policy</code> class. 
+                    Only one Policy object can be installed at any particular moment.
+                </p>
+                <p> During the execution of the code, the <code>SecurityManager</code> verifies any attempts to access 
+                    protected resources by cross-referencing the requested 
+                    <code>Permission</code> with the active <code>Policy</code>.
+                    Depending on the result, the <code>SecurityManager</code> will either grant the permission 
+                    or throw a <code>SecurityException</code>.
+                </p>
+                
+                <h4>XML Signature</h4>
+                <p>XML Signatures serve as an effective measure that can enhance data security, 
+                    and provide data integrity, message authentication, and signer authentication. 
+                    They can be applied to any data type. The Java platform supports creating and 
+                    validating XML Signatures. The common classes that are used to perform XML cryptographic 
+                    operations can be found in the <code>java.xml.crypto</code> module.
+                </p>
+            </div>
+        </div>
+    </div>
+    
+{% endblock %}

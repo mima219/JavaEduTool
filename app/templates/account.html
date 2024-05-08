@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Edit account |
+{% endblock %}
+
+{% block content %}
+<div>
+    <div class="m-5 d-flex justify-content-around flex-wrap">
+        <div class="media mb-4 d-flex flex-column justify-content-center align-items-center">
+            <img class="m-4 rounded-circle account-img" 
+                 src="{{ user.profile.image.url }}" 
+                 alt="profile_pic" height="300" width="300">
+            <div class="media-body mx-4 d-flex flex-column justify-content-center align-items-center">
+                <h2 class="account-heading">{{ user.username }}</h2>
+                <h3 class="text-secondary">{{ user.email }}</h3>
+            </div>
+        </div>
+    
+        <form method="POST" enctype="multipart/form-data" class="mt-3 form-register form-bg form-width-max">
+            {% csrf_token %}
+    
+            <fieldset class="form-group">
+                <legend class="border-bottom border-dark-subtle mb-4">Edit your Account</legend>
+                {{ u_form|crispy }}
+                {{ p_form|crispy }}
+            </fieldset>
+    
+            <div class="form-group">
+                <button class="btn btn-hover" type="submit">Update</button>
+            </div>
+        </form>
+    </div>
+    <div> 
+        <h3 class="border-top border-dark-subtle p-2">Tests History</h3>
+        <div class="container text-center justify-content-center">
+            <table class="table table-responsive table-hover align-middle" id="table-custom">
+                <thead class="table-borderless fw-bold" id="thead-custom">
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Test</th>
+                        <th scope="col">Score</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-custom">
+                    {% for item in test_history%}
+                        <tr>
+                            <td class="align-middle">{{ item.date_completed }}</td>
+                            <td class="align-middle">{{ item.title }}</td>
+                            <td class="align-middle">{{ item.score }}%</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+</div>
+{% endblock content %}

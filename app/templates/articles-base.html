@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Existing standards and guidelines |
+{% endblock %}
+
+{% block content %}
+    <br>
+    <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+        <div class="articles" id="standards">
+            <div id="standards-general">
+                <h2>Existing standards and guidelines</h2>
+                <p>This chapter aims to introduce existing standards and guidelines for secure coding. 
+                   These standards can be used to help programmers develop secure applications. 
+                </p>
+                
+                <h3>OWASP</h3>
+                <p> The Open Web Application Security Project (OWASP) is a well-known nonprofit organization. 
+                    It is a community-based project which is dedicated to providing resources, tools 
+                    and guidelines for developers to help them build secure applications and software.
+                    OWASP’s numerous documents and tools are freely available with the goal of assisting 
+                    programmers and organizations in identifying and mitigating security risks in applications.
+                </p>
+                <h4>OWASP Top Ten</h4>
+                <p> One of the most known resources provided by OWASP is OWASP Top 10, which highlights 
+                    the ten most common threats and vulnerabilities in web applications. This list was 
+                    first introduced in 2003 and is updated every three to four years. The current version
+                    was published in the year 2021 and contains the following:
+                </p>
+                
+                <ul>
+                    <li>A01 Broken Access Control</li>
+                    <li>A02 Cryptographic Failures</li>
+                    <li>A03 Injection</li>
+                    <li>A04 Insecure Design</li>
+                    <li>A05 Security Misconfiguration</li>
+                    <li>A06 Vulnerable and Outdated Components</li>
+                    <li>A07 Identification and Authentication Failures</li>
+                    <li>A08 Software and Data Integrity Failures</li>
+                    <li>A09 Security Logging and Monitoring Failures</li>
+                    <li>A10 Server Side Request Forgery (SSRF)</li>
+                </ul>
+                
+                <p> OWASP also offers deliberately vulnerable web applications
+                    that are designed to help programmers learn secure code practices, 
+                    and practice identifying and exploiting common vulnerabilities in 
+                    a safe environment. Such tools include OWASP Juice Shop Project, 
+                    OWASP WebGoat and OWASP Security Shepherd.
+                </p>
+                
+                <div class="text-center"> <!-- TODO Pic-->
+                    <img style="width:50%;" src="../static/app/images/owasp-logo.png" alt="The logo of OWASP.">
+                </div>
+                <br>
+                
+                <h3>NIST</h3>
+                <p> The National Institute of Standards and Technology (NIST) is a U.S. federal agency
+                    that was founded in 1901. It is one of the nation’s oldest physical science laboratories and 
+                    is now part of the U.S. Department of Commerce. Its goal is to strengthen the competitiveness 
+                    and innovation of U.S. industries by providing metrics, standards and tools which help 
+                    the quality and security of products and services. NIST’s publications are respected 
+                    and globally used. Companies often adhere to NIST’s recommendations, particularly 
+                    in the realm of cybersecurity.
+                </p>
+                <p> NIST develops cybersecurity standards, guidelines, best practices, and other resources
+                    to meet the needs of U.S. industry, federal agencies and the broader public. Their activities
+                    range from producing specific information that organizations can put into practice immediately
+                    to longer-term research that anticipates advances in technologies and future challenges.
+                    NIST Special Publication 800-160 also known by the title Systems Security Engineering: 
+                    Considerations for a Multidisciplinary Approach in the Engineering of Trustworthy Secure 
+                    Systems was originally published in November 2016. Since then it has received multiple revisions. 
+                    The latest version was published in  November 2022 and it is known as NIST SP 800-160 Vol. 1 Rev. 1. 
+                    This standard describes modern strategies for designing and developing secure and trustworthy systems. 
+                    It serves as a valuable resource for developers working on secure system development.
+                </p>
+                <!-- TODO Pic-->
+                <div class="text-center"> 
+                    <img style="width:40%;" src="../static/app/images/nist-logo.png" alt="The logo of NIST.">
+                </div>
+                <br><br>
+                
+                <h3>CWE</h3>
+                <p>Common Weakness Enumeration (CWE) is a community-developed list of software and hardware 
+                    weakness types. It serves as a common language, a measuring stick for security tools, 
+                    and as a baseline for weakness identification, mitigation, and prevention efforts. It includes
+                    a comprehensive range of uniquely identified and comprehensively described weaknesses, accompanied
+                    by information about their potential mitigation strategies and detection methods. CWE is maintained
+                    by MITRE Corporation and is collaboratively developed by numerous organizations, including 
+                    government agencies, academia and various companies. 
+                </p>
+                <!-- TODO Pic-->
+                <div class="text-center">
+                    <img style="width:40%;" src="../static/app/images/cwe-logo-nobg.png" alt="The logo of CWE.">
+                </div>
+                <br><br>
+                
+                <h3>CERT Secure Coding Standards</h3>
+                <p>The CERT Secure Coding Standards are maintained by the CERT Coordination Center at the Software 
+                    Engineering Institute (SEI). SEI is located at Carnegie Mellon University and is a Federally 
+                    Funded Research and Development Center (FFRDC) that conducts research for 
+                    the United States government. SEI oversees research and development in software engineering,
+                    systems engineering, cybersecurity, and other areas of computing. The CERT Division of SEI is a 
+                    leader in cybersecurity. CERT experts are researching security vulnerabilities in software 
+                    products, contributing to long-term changes in networked systems, and developing cutting-edge
+                    information and training to improve the practice of cybersecurity. CERT provides language-specific 
+                    secure coding standards for Java, Perl, C, C++ and others, tailored for each language-specific 
+                    characteristic. The security standards focus mainly on fundamental security principles s
+                    uch as input validation, error handling and memory management.
+                </p>
+                <!-- TODO Pic-->
+                <div class="text-center"> 
+                    <img style="width:30%;" src="../static/app/images/cert-logo-nobg.png" alt="The logo of CERT.">
+                </div>
+            </div>
+            <br><br>
+            <div id="standards-java">
+                <h2>Existing standards and tools in Java</h2>
+                <p> This chapter outlines currently available resources for Java developers. 
+                    The first and second sections describe guidelines for secure coding. The following sections 
+                    contain mentions of static code analysis tools and interactive educational tools.
+                </p>
+                <h3>Oracle Java Documentation - Security</h3>
+                <p> Oracle provides security guidelines as a part of official Java documentation. 
+                    The sections of official Java documentation that pertain to security are named Secure 
+                    Coding Guidelines for Java SE and Security Developer’s Guide.
+                </p>
+                <p> Secure Coding Guidelines for Java SE outlines guiding principles on software security 
+                    and provides a set of security-specific guidelines targeted at the Java programming language.
+                    Guidelines in this document cover topics such as interactions with untrusted code and situations 
+                    when a security manager is in use.
+                </p>
+                <p> Security Developer’s Guide is a document designed to help developers understand the Java security 
+                    technology, tools, and implementations of commonly used security algorithms, mechanisms, 
+                    and protocols on the Java Platform, Standard Edition (Java SE). Its content is intended for academic
+                    use and provides both theoretical frameworks and practical examples.
+                </p>
+                <h3>CERT Oracle Secure Coding for Java</h3>
+                <p> The CERT Division of Software Engineering Institute created a set of guidelines and best 
+                    practices specifically for developing reliable and secure Java code. The  CERT Oracle Secure 
+                    Coding Standard for Java provides rules and recommendations, collectively referred to as guidelines.
+                    The goal of these guidelines is to eliminate insecure coding practices that can lead to exploitable 
+                    vulnerabilities and lead to safe, secure, dependable, and resilient high-quality systems. 
+                    The rules provide normative requirements for code. Violation of a rule can likely result in weak 
+                    points that may negatively affect the security of a system. The recommendations are suggestions 
+                    for improving code quality Violation of recommendation does not by definition mean that there 
+                    is a flaw in the code. Each guideline gives examples of compliant and noncompliant code 
+                    to help developers with a practical understanding of these practices. The main topics of this 
+                    standard include input validation, declarations and initialization, expressions, platform security,
+                    and runtime environment, among others. Matured rules and recommendations are published as official 
+                    releases in report or book form.
+                </p>
+                <h3>Static code analysis</h3>
+                <p>Static code analysis is a method of debugging code by examining the source code without 
+                    running the program. Its main objective is to help developers ensure that their code is compliant, 
+                    safe, and secure. There are multiple tools online that can help with this. Some examples of static 
+                    analysis tools available for Java are Spotbugs, SonarQube, and Coverity. A popular Java IDE named 
+                    IntelliJ IDEA also offers code analysis tools that can help identify security issues 
+                    during code development.
+                </p>
+                <h3>Interactive Educational Tools</h3>
+                <p>Currently, several educational tools offer hands-on learning experiences and real-world scenarios 
+                    to help programmers reinforce their knowledge of secure coding concepts. These interactive learning 
+                    platforms provide dynamic learning environments, allowing their users to train secure coding and 
+                    receive immediate feedback. Most of these platforms require paying a subscription fee but offer 
+                    few lessons as a free trial. Some of these platforms that offer training in Java are 
+                    Codebashing, Secure Code Warrior, Avatao, SecureFlag, and Kontra.
+                </p>
+            </div>
+            <br><br>
+        </div>
+    </div>
+{% endblock %}

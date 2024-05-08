@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+{% block title %}
+    SQL Injection | 
+{% endblock %}
+
+{% block content %}
+    <br>
+    <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+        <div class="articles" id="sql-injection">
+            <h2>SQL Injection</h2>
+            <p> One of the most common attacks in Java is SQL injection. It is a type of injection 
+                attack which means an attacker uses a vulnerability in code to inject malicious c
+                ode by submitting an executable input to a program and changing its course of execution.
+            </p>
+            <p>In the case of SQL injection, the attacker inserts SQL code into SQL queries executed 
+                by the program. Hackers make assumptions about how the input fields translate SQL commands.
+                If they manage to guess correctly, they are often able to completely override the syntax and
+                the way the original query works. For instance, by using special characters such as semicolons
+                or single quotes they may be able to add or ignore static commands.
+            </p>
+            <p>A successful attack can be used to extract sensitive information from a database, delete data or drop 
+                entire tables thus corrupting the database and making the application unusable, execute administrative 
+                operations on the database, recover the content of a given file present in the database management 
+                system or to inject further malicious code to be executed when users use the application.
+            </p>
+            <p> SQL injections can happen in any software that utilizes SQL databases. They are still widespread,
+                mainly in web applications because they often use back-end SQL servers. They were first documented
+                in 1998 and are considered as one of the oldest known vulnerabilities. They are part of 
+                OWASP Top 10 A3:2021 category - injection.</p>
+            
+            <h3>Simple example of SQL injection</h3>
+            <p> A classic example of SQL injection is a statement that is always true.</p>
+            <p>Consider the following query:</p>
+            <pre>
+                <code class="language-sql">
+                    SELECT * FROM users WHERE email = 'user@email.com' AND pass  = 'password' LIMIT 1
+                </code>
+            </pre>
+            
+            <p> In this case if the hacker inputs <code>' or 1=1--</code>  as the password the resulting 
+                statement would look like this:
+            </p>
+            <pre>
+                <code class="language-sql">
+                    SELECT * FROM users WHERE email = 'user@email.com' AND pass  =' or 1=1- -' LIMIT 1
+                </code>
+            </pre>
+            <p>In this way, the hacker gained access to the account of the user with the email user@email.com 
+                without having to guess the password.
+            </p>
+            <br>
+            
+            <p>Another very simple example of SQL injection could be this:</p>
+            <pre>
+                <code class="language-java">
+                    String password = “password”; // this is input from user
+                    String query = “SELECT * from users where username =  ‘USER’  and password = ‘ ” + password + “ ‘ ”;
+                </code>
+            </pre>
+            
+            <p>A hacker could provide <code class="sql inline">‘; DROP TABLE users --</code> as a password and after 
+                concatenating the single quote at the beginning would match the one in the query. 
+                So the query would look like this:
+            </p>
+            <pre>
+                <code class="sql">
+                SELECT * from users where username =  ‘USER’ and password = ‘ ‘; DROP TABLE users --  ‘
+                </code>
+            </pre>
+            
+            <p>So instead of selecting the user, the whole table would be dropped.</p>
+            <br>
+            
+            <p>A further example of an SQL injection attack could be when an attacker retrieves data 
+                from other tables in the database. To achieve this the attacker uses the UNION operator
+                to append an additional malicious query to the original one.</p>
+            <pre>
+                <code class="sql">
+                 SELECT name, description FROM courses WHERE category = ‘ + user_input + ’
+                </code>
+            </pre>
+            
+            <p> The attacker can cause the application to return all usernames and passwords by submitting this input:</p>
+            <pre>
+                <code class="sql">' UNION SELECT username, password FROM users--</code>
+            </pre>
+            
+            
+            <br><br>
+            <h3>Types of SQL injections</h3>
+            <p> There are 5 primary types of SQL injection that can be categorized into 3 categories:</p>
+            <h5>In-band SQL injection</h5>
+            <p>It is the most common SQL injection attack. The attacker receives the result as a direct 
+                response using the same communication channel. In other words, the attacker exploits 
+                vulnerabilities in the application directly through the user interface.
+            </p>
+            <p>Union-based injection is a subtype of in-band SQL injection where attackers use the UNION operator
+                to append a malicious query to the original one to retrieve sensitive data.
+            </p>
+            <p>Error-based injection is another subtype of in-band SQL injection where an attacker exploits 
+                application error messages to gather information about the database.
+            </p>
+            <h5>Blind SQL injection</h5>
+            <p>Is a type of SQL injection where an attacker does not receive a direct response from the 
+                database and instead observes the success of their attack based on the application’s response.
+            </p>
+            <p>Boolean-based injection sends queries to the database to force the application to return a boolean result.</p>
+            <p>Time-based injection combines legitimate queries with SQL commands that cause time delays.</p>
+            <h5>Out-of-band SQL injection</h5>
+            <p>By using out-of-band SQL injection attacks cause the application to send data to a remote endpoint 
+                that is controlled by the attacker. This is only possible if the application server triggers 
+                DNS or HTTP requests.</p>
+            
+            <h3>Prevention</h3>
+            <p>One of the most effective methods of preventing SQL injections is to use object-relational mapping (ORM)
+                frameworks like Hibernate and utilize parameterized queries and prepared statements. These mechanisms 
+                serve to separate SQL code from user input, thus preventing hackers from executing malicious SQL commands.
+            </p>
+            <p>Using prepared statement</p>
+            <pre>
+                <code class="language-java">
+                    String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
+                    try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                        preparedStatement.setString(1, inputUsername);
+                        preparedStatement.setString(2, inputPassword);
+                        ResultSet resultSet = preparedStatement.executeQuery();
+                        // Process the result set
+                    }
+                </code>
+            </pre>
+            
+            <p>Using Hibernate Query with parameters</p>
+            <pre>
+                <code class="language-java">
+                    String hql = "FROM User WHERE username = :username AND password = :password";
+                    Query&lt;User&gt; query = session.createQuery(hql, User.class);
+                    query.setParameter("username", inputUsername);
+                    query.setParameter("password", inputPassword);
+                    List&lt;User&gt; results = query.getResultList();
+                </code>
+            </pre>
+            
+            <p>Other methods preventing SQL injection are:</p>
+            <ul class="bullet-list">
+                <li> Validation of user input to ensure that it meets the requirements of the expected format and range.
+                    Reject or sanitize any input that does not meet these requirements.
+                </li>
+                <li> Following the principle of least privilege – restriction of user permissions to the 
+                    minimum necessary can prevent potential data corruption.
+                </li>
+                <li>Avoiding the use of dynamic SQL queries that concatenate strings.</li>
+            </ul>
+            <br>
+        </div>
+    </div>
+{% endblock %}

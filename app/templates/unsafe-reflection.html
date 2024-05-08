@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Unsafe reflection |
+{% endblock %}
+
+{% block content %}
+    <br>
+    <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+        <div class="articles" id="unsafe-reflection">
+            <h2>Unsafe use of reflection</h2>
+            <p>Another type of vulnerability that is especially relevant to Java is the unsafe use of reflection.
+                This type of vulnerability occurs when the application is using Object Reflection in an insecure way.
+            </p>
+            <p>Object Reflection is a programming technique utilized to examine and modify the behaviour 
+                of an application during its runtime. This allows the creation of new objects, methods 
+                and the manipulation of class variables through dynamic instantiation at runtime, without 
+                having a prior understanding of their implementation.
+            </p>
+            <p>When the Object Reflection is used incorrectly it may allow an attacker to create unexpected control
+                flow paths through the application, potentially leading to evasion of security measures. 
+                This attack vector could potentially allow the attacker to circumvent the authentication process 
+                or cause the application to exhibit other unforeseen behaviour.
+            </p>
+            
+            <h3>Example</h3>
+            <p>The following example of unsafe reflection was taken from CWE guidelines.</p>
+            <p>Developers usually use the reflection API to implement their own command dispatcher.</p>
+            <pre>
+                <code class="language-java">
+                    String ctl = request.getParameter("ctl");
+                    Worker ao = null;
+                    if (ctl.equals("Add")) {
+                        ao = new AddCommand();
+                    }
+                    else if (ctl.equals("Modify")) {
+                        ao = new ModifyCommand();
+                    }
+                    else {
+                        throw new UnknownActionError();
+                    }
+                    ao.doAction(request);
+                </code>
+            </pre>
+            <p>Command dispatcher without reflection</p>
+            
+            <br>
+            <p>A programmer might refactor this code to use reflection as follows:</p>
+            <pre>
+                <code class="language-java">
+                    String ctl = request.getParameter("ctl");
+                    Class cmdClass = Class.forName(ctl + "Command");
+                    Worker ao = (Worker) cmdClass.newInstance();
+                    ao.doAction(request);
+                </code>
+            </pre>
+            
+            <p>At first glance, refactoring the code this way appears to be advantageous. The code has been condensed,
+                the if/else statements have been completely removed, and the command dispatcher can now 
+                accommodate new command types without any alterations.
+            </p>
+            <p>Nevertheless, the refactoring provides an opportunity for a potential attacker to create 
+                instances of any object that implements the <code>Worker</code> interface. In cases where the command 
+                dispatcher handles access control, programmers must update the dispatcher's access control
+                code whenever they create a new class that implements the <code>Worker</code> interface.
+            </p>
+            <p>One of the ways to solve this problem is to assign the responsibility of verifying 
+                access control to the <code>Worker object</code>. An improved example would look like this:
+            </p>
+            <pre>
+                <code class="language-java">
+                    String ctl = request.getParameter("ctl");
+                    Class cmdClass = Class.forName(ctl + "Command");
+                    Worker ao = (Worker) cmdClass.newInstance();
+                    ao.checkAccessControl(request);
+                    ao.doAction(request);
+                </code>
+            </pre>
+            
+            <p>However, this improvement comes with its own problems. The main one is that it
+                makes it easier for programmers to make access control mistakes because it encourages
+                a decentralized approach to access control.
+            </p>
+            <p>This code snippet also shows another security issue with using reflection to create 
+                a command dispatcher. A potential attacker may call the default constructor to 
+                any type of object. As a matter of fact, they are not limited to objects that 
+                implement the <code>Worker</code> interface, they can invoke the default constructor for any 
+                object in the system. If the object does not implement the <code>Worker</code> interface, 
+                it will cause a <code>ClassCastException</code> to be thrown before
+                the assignment to ao. However, if the constructor executes actions that 
+                benefit the attacker, the damage will have already been caused. While this 
+                scenario might not cause much harm in simple applications, in larger applications 
+                where complexity increases exponentially, it is plausible to consider the possibility
+                of an attacker discovering a constructor to exploit as a means to carry out an attack.
+            </p>
+            
+            <h3>Prevention</h3>
+            <p>Multiple strategies can help Java programmers prevent or mitigate unsafe use of reflection.
+                The best way to prevent reflection vulnerabilities is to limit reflection usage only 
+                to essential cases where it is strictly necessary. Reflection should not be used for 
+                routine tasks or in situations where other methods can be employed.</p>
+            <p>Another method of mitigating unsafe reflection is to apply strict input validation 
+                by using allowlists or indirect selection to guarantee that users are restricted
+                to choosing from approved classes or code.
+            </p>
+            <p>Additionally, enforcing access controls by properly protecting sensitive parts of the code.
+                By utilizing appropriate access modifiers such as <code>private</code> and <code>protected</code> 
+                to restrict access to sensitive members of classes, the risk of unauthorized 
+                access through reflection can be significantly reduced.
+            </p>
+            <p>An additional approach to reduce the risk of unauthorized access via reflection 
+                is to explicitly disable access override by using the <code>setAccessible(false)</code> method.
+                When it is invoked on a member object, this method ensures that access controls 
+                are enforced. This helps minimize the potential for security breaches by preventing 
+                malicious external code from accessing sensitive code.
+            </p>
+            <p>Lastly, using the Java Security Manager. The Java Security Manager is a built-in component
+                of the Java Runtime Environment that helps programmers create and manage security policies
+                in Java applications. It is capable of restricting reflective operations by specifying which
+                classes and under what conditions are allowed to perform reflective operations. This is achieved
+                by configuring security policies that are defined in a security policy file. For instance,
+                programmers can create a security policy that explicitly grants permission to perform 
+                reflective operations for specific classes, while denying access to others. 
+            </p>
+        </div>
+    </div>
+{% endblock %}

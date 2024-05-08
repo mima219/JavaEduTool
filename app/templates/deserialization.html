@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Insecure Deserialization |
+{% endblock %}
+
+{% block content %}
+    <br>
+    <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+        <div class="articles" id="insecure-deserialization">
+            <h2>Insecure Deserialization</h2>
+            <p> Serialization is a process of turning data structures, like objects, into a data format that
+                can be restored later. Popular formats for serializing data are JSON, XML or YAML.
+            </p>
+            <p> Deserialization is the opposite process, which means that the structured data is restored 
+                back to the original data structure.
+            </p>
+            <p> Many programming languages offer native ways of serializing objects. These native deserialization 
+                features can be exploited for malicious purposes when working with untrusted data.
+            </p>
+            
+            <div class="text-center"> 
+                <img style="width:90%;" src="../static/app/images/deserialization-diagram.jpg" 
+                     alt="Deserialization Diagram">
+            </div>
+            
+            <p> Insecure deserialization is a vulnerability that happens when data controlled by
+                an attacker is deserialized by a server. This gives an attacker the ability to cause 
+                a denial of service attack, bypass authentication, access arbitrary files or even remote code execution.
+            </p>
+            <br>
+            <p> Build-in support for serialization and deserialization in Java is implemented through 
+                the <code>java.io.Serializable</code> interface. Class <code>ObjectOutputStream</code> can be used to 
+                write objects to output as a stream of bytes and class <code>ObjectInputStream</code>
+                serves for deserialization of these streams.
+            </p>
+            
+            <h3>Example in Java</h3>
+            <p>This example will show how a hacker may use insecure deserialization in Java to exploit an application. 
+                As mentioned before, for an object or class to be serializable it has to 
+                implement the <code>java.io.Serializable</code> interface. Classes that implement this interface use methods 
+                for serializing object instances called writeObject and deserializing them called <code>readObject</code>.
+            </p>
+            <p>A typical implementation of this could look something like this:</p>
+            <pre>
+                <code class="language-java">
+                    public class Thing implements Serializable {
+                        private static final long serialVersionUID = 0L;
+                    
+                        // Class fields
+                    
+                        private void readObject(ObjectInputStream ois) 
+                        throws ClassNotFoundException, IOException {
+                            ois.defaultReadObject();
+                            // Custom attribute setting
+                        }
+                    
+                        private void writeObject(ObjectOutputStream oos) 
+                        throws IOException {
+                            ois.defaultWriteObject(); 
+                            // Custom attribute getting
+                        }
+                    }
+                </code>
+            </pre>
+
+            <p>Classes can be exposed to vulnerabilities when they possess generic or loosely defined fields and
+                employ reflection to assign attributes to these fields.
+            </p>
+            <pre>
+                <code class="language-java">
+                    public class BadThing implements Serializable {
+                        private static final long serialVersionUID = 0L;
+                    
+                        Object looselyDefinedThing;
+                        String methodName;
+                    
+                        private void readObject(ObjectInputStream ois) 
+                        throws ClassNotFoundException, IOException {
+                            ois.defaultReadObject();
+                            try {
+                                Method method = 
+                                looselyDefinedThing.getClass().getMethod(methodName);
+                                method.invoke(looselyDefinedThing);
+                            } catch (Exception e) {
+                                // handle error...
+                            }
+                        }
+                        // ...
+                    }
+                </code>
+            </pre>
+            
+            <p>In the code above class <code>BadThing</code> has a field <code>looselyDefinedThing</code>
+                of type <code>Object</code>, which is a very broad definition and could allow an attacker
+                to assign any type available on the classpath to this field. Another vulnerability of this class
+                is that the <code>readObject</code> method includes code that invokes a method on <code>looselyDefinedThing</code>
+                that uses field <code>methodName</code> which can be also controlled by the attacker through reflection.
+            </p>
+            <p>The attacker could exploit vulnerabilities in this code by using the 
+                <code>MyCustomAttackObject</code> class and execute a command on the host machine:
+            </p>
+            
+            <pre>
+                <code class="language-java">
+                    BadThing badThing = new BadThing();
+                    badThing.looselyDefinedThing = 
+                        new MyCustomAttackObject();
+                    badThing.methodName = "methodThatTriggersAttack";
+                    
+                    Method method = 
+                        looselyDefinedThing.getClass().getMethod(methodName);
+                    method.invoke(methodName);
+                    
+                    public class MyCustomAttackObject implements Serializable {
+                        public static void methodThatTriggersAttack() {
+                            try {
+                                Runtime.getRuntime().exec("echo \"Oh, no! 
+                                    I've been hacked\"");
+                            } catch (IOException e) {
+                                // handle error...
+                            }
+                        }
+                    }
+                </code>
+            </pre>
+            
+            <br>
+            <h3>Prevention</h3>
+            <p>To prevent an insecure deserialization it is important to check user input before beginning
+                the deserialization process. Deserialization of user input should be avoided if possible. 
+                If cannot be avoided it is best to restrict it to a small list of whitelisted classes. 
+                It is better to use simpler data types such as strings or arrays instead of objects.
+            </p>
+            <p>In Java, multiple practices can help with insecure deserialization.</p>
+            <p>Sensitive data of an object that should be never exposed to users or controlled by 
+                them during deserialization should be marked as <code>private transient</code>. 
+                Declaring the fields containing sensitive data will prevent them from being 
+                restored during deserialization.
+            </p>
+            <p>As a result of the hierarchy of objects in applications, some of them may also 
+                be required to implement the <code>Serializable</code> interface. To ensure these
+                objects cannot be deserialized it is recommended to declare a <code>readObject()</code>
+                method with a final modifier which will always throw an exception.
+            </p>
+            <pre>
+                <code class="language-java">
+                    private final void readObject(ObjectInputStream in) 
+                    throws java.io.IOException {
+                        throw new java.io.IOException("Cannot be deserialized");
+                }
+                </code>
+            </pre>
+            
+            <p>Another method of prevention is to harden <code>java.io.ObejctInputStream</code> class that is used 
+                for object deserialization. This is achieved by overriding 
+                the <code>ObjectInputStream#resolveClass()</code> method to prevent arbitrary classes
+                from being deserialized. This guarantees that no deserialization will occur unless the type 
+                is authorized because this call happens before method <code>readObject()</code> is called.
+            </p>
+            <p>A simple example could look like this:</p>
+            <p>The provided code snippet shows a simple example, where the <code>LookAheadObjectInputStream</code>
+                class is guaranteed to only deserialize objects belonging to the <code>Bicycle</code> class.</p>
+            <pre>
+                <code>
+                    public class LookAheadObjectInputStream 
+                    extends ObjectInputStream {
+                        public LookAheadObjectInputStream(InputStream inputStream) 
+                        throws IOException {
+                            super(inputStream);
+                        }
+                        /**
+                        * Only deserialize instances of our expected Bicycle class
+                        */
+                        @Override
+                        protected Class&lt;?&gt; resolveClass(ObjectStreamClass desc)
+                        throws IOException, ClassNotFoundException {
+                            if (!desc.getName().equals(Bicycle.class.getName())) {
+                                throw new 
+                                InvalidClassException("Unauthorized deserialization attempt", 
+                                    desc.getName());
+                            }
+                            return super.resolveClass(desc);
+                        }
+                    }
+                </code>
+            </pre>
+            <br>
+        </div>
+    </div>
+{% endblock %}

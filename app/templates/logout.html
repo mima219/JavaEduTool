@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Logout Page |
+{% endblock %}
+
+
+{% block content %}
+<div class="content-center">
+    <div class="container">
+        
+        <br>
+        <h1 class="mb-3 fw-bold display-6">You have been logged out</h1>
+        <div class="border-top border-dark-subtle pt-3">
+            <small class="text-muted">
+                <a class="ml-2" style="color:#e75516" href="{% url 'login' %}">Log In</a>
+            </small>
+        </div>
+            
+    </div>
+</div>
+{% endblock %}

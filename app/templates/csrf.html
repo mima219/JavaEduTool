@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Cross-site request forgery | 
+{% endblock %}
+
+{% block content %}
+    <br>
+    <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+        <div class="articles" id="csrf">
+            <h2>Cross-site request forgery</h2>
+            <p>Cross-site request forgery (CSRF) is a type of web security vulnerability that 
+                occurs when the user is tricked into executing unwanted actions on a web application in which 
+                they are currently authenticated. The attacker creates an HTTP request to the application and 
+                then finds a way to get this malicious code to the user's browser. This usually takes the form
+                of sending the user a link via email or chat or embedding a script in a web page the user visits.
+                By assuming the victim's identity and privileges, the attacker can carry out unwanted 
+                actions on the victim's behalf.
+            </p>
+            <p>In the case of the majority of websites, the browser requests made by users automatically
+                contain all the necessary credentials linked to the site. These credentials may include
+                the user's session cookie, IP address, Windows domain credentials, and more. As a result,
+                if the victim is authenticated to the site, the unprotected target site will lack the ability
+                to differentiate between legitimate authorized requests and forged authenticated requests.
+            </p>
+            <p>A successful CSRF attack can enable the attacker to transfer funds, change email or password,
+                make an unauthorized purchase, or take any other action a user is allowed to do. 
+                If the victim's account is administrative, this attack can compromise the entire web application.
+            </p>
+            <p>Login CSRF is a special form of cross-site request forgery attack that enables an attacker 
+                to gain unauthorized access to the victim's private data. By using this technique, the attacker
+                can manipulate the unauthorized user to log in to an account the attacker controls. 
+                The user then may unknowingly submit their personal data to the attacker by adding information
+                to the account. This data and the user's activity history on the web application 
+                are then available to the attacker.
+            </p>
+            <p>Another type of CSRF vulnerability is called the stored CSRF flaw. 
+                This vulnerability enables the storage of a CSRF attack directly on the vulnerable website.
+                This can be achieved by a cross-site scripting attack or by inserting an IMG or IFRAME tag into 
+                a field that accepts HTML. The severity of stored CSRF is higher compared to the typical CSRF attack.
+                The main reason for this is that the potential victim has an increased chance to come across the page
+                containing the attack as opposed to some random page on the internet and there is a high possibility
+                that they are already authenticated on the website.
+            </p>
+            <p> Cross-site request forgery is also known as Sea Surf, XSRF, Session Riding,
+                Hostile Linking, Cross-Site Reference Forgery and One-Click Attack.
+            </p>
+            
+            <h3>False Prevention</h3>
+            <p>Several strategies are sometimes considered prevention measures
+                for defending against CSRF, but they have proven ineffective. Some of them are:
+            </p>
+            <p> <b>Multi-Step Transactions</b> - If the attacker can predict or deduce each step of the transaction
+                then splitting the operation that modifies the server state into multiple HTTP requests 
+                does not offer any benefit.
+            </p>
+            <p> <b>Secret cookie</b> - The web browser always submits all the relevant cookies, even the secret ones,
+                in each request. This includes the authentication tokens, even if 
+                the end-user did not mean to send them.
+            </p>
+            <p> <b>HTTPS</b> - HTTPS should be viewed as a fundamental prerequisite for ensuring 
+                the reliability and effectiveness of any preventive strategies implemented 
+                to mitigate CSRF vulnerabilities. However, on its own, it does nothing to defend against CSRF.
+            </p>
+            <p> <b>Only accepting POST requests</b> - Applications can be designed to execute business logic 
+                only through POST requests. There is an incorrect assumption that it is impossible to 
+                carry out a CSRF attack since the attacker cannot create a malicious link. Attackers 
+                have several methods to deceive a potential victim into submitting a forged POST request,
+                including deploying a deceptive form with hidden values on the attacker's website.
+            </p>
+            <p> <b>URL rewriting</b> - This technique can prevent attackers from guessing the victim's session ID.
+                However, it also exposes the session ID in the URL, which creates another security flaw.
+            </p>
+            <p> <b>Validating the Referrer Header</b> - The attacker can easily spoof the referrer header. 
+                Moreover, some users or browsers opt not to send the referrer header due to privacy
+                settings or policies, resulting in misleading results. Additionally, in some instances,
+                the referrer field can be null, for instance, when a user visits a website via a bookmark
+                or other non-traditional means without a standard URL. These cases could be then misinterpreted
+                as CSRF attacks, leading to false positive flags.
+            </p>
+            
+            <h3>Example</h3>
+            <p>Here is a very simple example of a classic CSRF attack.</p>
+            <p>The vulnerable application forwards a state changing request in plain text without encryption.</p>
+            <p><code>http://bankx.com/app?action=transferFund&amp;amount=3500&amp;destinationAccount=4673243243</code> </p>
+            
+            <p>An attacker then creates a request that transfers funds from the victim's account to the attacker's account.
+                This request is embedded into an image, which is then strategically dispersed across various 
+                websites managed by the attacker.
+            </p>
+            <pre>
+                <code class="language-html">
+                    &lt;img src = "http://bankx.com/app?action=transferFunds&amp;amount=14000&amp;destinationAccount=attackersAcct#"
+                        width = "0" height = "0" /&gt;
+                </code>
+            </pre>
+            
+            <p>Another type of CSRF attack hackers can easily execute is through a POST request.
+                Let's assume that a website allows its users to transfer money to one another using 
+                this simplified online form:
+            </p>
+            <pre>
+                <code class="language-html">
+                    &lt;form method="post" action="https://bank.com/transfer"&gt;
+                        Specify the exact sum you wish to transfer:
+                            &lt;input name="amount" /&gt;
+                        Intended recipient:
+                            &lt;input name="receiver" /&gt;
+                        &lt;input type="submit" value="Send" /&gt;
+                    &lt;/form&gt;
+                </code>
+            </pre>
+            
+            <p>Firstly, an attacker creates an account on this website.
+                Following this, the attacker then writes two separate phishing emails.
+                The first email masquerades itself as an official email from the website
+                and contains a false warning about potential fraud detected in the user's account. 
+                The primary objective of this email is to get the user to log in to their account.
+            </p>
+            <p>The second email suggests that the recipient has won some monetary prize and 
+                contains this hidden markup:
+            </p>
+            
+            <pre>
+                <code class="language-html">
+                    &lt;form method="post" action="https://bank.com/transfer"&gt;
+                        &lt;input name="amount" type="hidden" value="1000" /&gt;
+                        &lt;input name="recipient" type="hidden" value="@attacker" /&gt;
+                    &lt;/form&gt;
+                    &lt;script&gt;document.forms[0].submit();&lt;/script&gt;
+                </code>
+            </pre>
+            
+            <p>Without requiring any user interaction, the second email automatically triggers 
+                the execution of the attack as soon as it is displayed in the user's web browser.
+                By indiscriminately distributing these two emails to as many people as possible, 
+                the attacker casts a large net, potentially including users who have accounts 
+                on the vulnerable website. Some of the people will open these emails, enabling 
+                the attacker to gain 1000$ from each.
+            </p>
+            <p>Other HTTP methods that alter state can also be exploited. While PATCH, POST, PUT, and DELETE
+                are typically used for state changes, there is a risk of vulnerability if GET, HEAD, 
+                and OPTIONS are also capable of making changes.
+            </p>
+            
+            <h3>Prevention</h3>
+            <p>When talking about CSRF mitigation techniques the first important thing that
+                needs to be mentioned is that Cross-Site Scripting (XSS) can defeat all CSRF
+                mitigation techniques. More on XSS in the section. Additionally, programmers 
+                should always check if the framework they are using has built-in CSRF protection and use it.
+            </p>
+            <h5>Token-Based Mitigation</h5>
+            <p>The synchronizer token pattern is widely acknowledged as an effective and recommended 
+                technique for addressing CSRF vulnerabilities.
+            </p>
+            <p>As mentioned before many frameworks have built-in CSRF protection, which includes synchronizer
+                token defenses. For instance, Spring security has two mechanisms to prevent CSRF attacks:
+                the synchronizer token pattern and specifying the SameSite Attribute on the session cookie.
+            </p>
+            <p>It is recommended that the CSRF tokens are created on the server-side and are generated 
+                only once per session or per request. Per-request tokens offer increased security compared 
+                to per-session tokens due to the limited timeframe available for attackers to misuse stolen
+                tokens. However, the usage of per-request tokens may lead to potential usability issues. 
+                CSRF tokens should be unique for each user session, kept secret, and generated using 
+                a secure method to ensure unpredictability. These tokens help prevent CSRF attacks because,
+                without them, attackers can't make valid requests to the server.
+            </p>
+            <p>The server can send a CSRF token to the browser as a part of a response payload,
+                such as a JSON response or HTML response. Afterwards, when the user interacts with the website,
+                the browser sends the token back to the server either as a hidden field when a form is submitted
+                through an AJAX request as a custom header value or as part of a JSON payload. 
+                It is not recommended to send a CSRF token through a cookie for synchronous patterns.
+                Additionally, it is crucial to ensure that a CSRF token is not exposed in server logs
+                or within the URL. GET requests have the potential to reveal CSRF tokens in various locations,
+                including browser history, log files, network utilities that log the initial line of an HTTP request,
+                and Referer headers when the protected site directs to an external site.
+            </p>
+            <p>There is an alternative to using the Synchronizer Token Pattern called the Double-Submit Cookie pattern.
+                This method is simpler and easier to implement because it is stateless. The most secure way 
+                to implement this method is the Signed Double-Submit Cookie, which uses a secret key 
+                known exclusively to the server. This key is used to sign the CSRF token, ensuring 
+                its uniqueness and security. It is recommended to use the Hash-based 
+                Message Authentication (HMAC) algorithm to secure the system's tokens. 
+                Additionally, it is also advisable to bind the CSRF token to the user's 
+                ongoing session in order to provide an additional layer of security. In order to create 
+                HMAC CSRF tokens that are tied to a user's session, the system requires a value that is 
+                unique to each login session, a secret cryptographic key, and a random value to prevent collisions.
+            </p>
+            <h5>Disallowing non-simple requests</h5>
+            <p>Another method for preventing CSRF attacks is disallowing non-simple requests. 
+                When a <code>&lt;form&gt;</code> tag submits data, it triggers a "simple" request that 
+                browsers do not check thoroughly. These simple requests can be susceptible 
+                to CSRF attacks as browsers allow them to be sent to any website. 
+                To be considered simple, a request must have one of these content types:
+                <code>application/x-www-form-urlencoded</code>, <code>multipart/form-data</code>, or <code>text/plain</code>. 
+                Hence, a straightforward solution is for the server or API to decline 
+                these simple content types.
+            </p>
+            <p>More techniques for mitigating Cross-Site Request Forgery are:</p>
+            <p>Employing custom request headers for AJAX/API - The client appends 
+                a custom header to requests that require CSRF protection. 
+                The server rejects requests lacking the custom header.
+            </p>
+            <p>Utilizing the SameSite cookie attribute to restrict cookies from being sent
+                in cross-site requests. However, this method may cause compatibility 
+                issues with older browsers. 
+            </p>
+            <br>
+        </div>
+    </div>
+{% endblock %}

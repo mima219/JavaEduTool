@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Test |
+{% endblock %}
+
+{% block content %}
+    <br>
+    <h3 class="display-6">Welcome to the testing section of this application</h3>
+    <p class="lead"> Choose a test by clicking a button bellow. You can try to test your knowledge by completing the test without reading
+        the articles about secure coding. After completing the test your results will be displayed.
+    </p>
+    <p>If you have made an account, you can save the test results to view them later.</p>
+    <div class="mb-4">
+        <button class="btn btn-hover btn-test" id="btn-guides" onclick="guidelinesClick()"> Guidelines and Standards </button>
+        <button class="btn btn-hover btn-test .btn-basics" id="btn-basics" onclick="basicsClick()"> Basics </button>
+        <button class="btn btn-hover btn-test " id="btn-common" onclick="commonClick()"> Common Vulnerabilities </button>
+    </div>
+    
+    <section class="test-standards d-flex flex-column">
+        <div class="test-box">
+            <div class="test-header">
+                <span><p class="fw-bold test-title h5"> Guidelines and Standards Test</p></span>
+                <span class="header-score"> Score: 0/5 </span>
+            </div>
+            <h2 class="question-text"> What is OWASP and what is its primary objective? </h2>
+            <div class="option-list">
+                <div class="option">
+                    <span>A software company focused on building secure applications. </span>
+                </div>
+                <div class="option">
+                    <span>A nonprofit organization dedicated to providing resources for developers to build secure applications. </span>
+                </div>
+                <div class="option">
+                    <span>A government agency responsible for setting cybersecurity standards.</span>
+                </div>
+                <div class="option">
+                    <span>I don't wish to answer.</span>
+                </div>
+            </div>
+            <div class="test-footer">
+                <span class="question-total fw-bold">1 of 5 Questions</span>
+                <button class="btn btn-hover btn-next" onclick="nextClick()">Next</button>
+            </div>
+        </div>
+    
+        <div class="result-box">
+            <h2 class="fw-bold">Your Results</h2>
+            <div class="percentage-box">
+                <div class="progress-circle"> 
+                    <span class="progress-val"> 0% </span>
+                </div>
+                <span class="score-text">0 out of 5 </span>
+            </div>
+            <div class="buttons">
+                <button class="btn btn-hover btn-try-again" onclick="tryAgainClick()">Try Again</button>
+                {% if user.is_authenticated %}
+                    <form>
+                        {% csrf_token %}
+                        <button class="btn btn-hover" onclick="saveClick()">Save Result</button>
+                    </form>
+                {% else %}
+                    <button class="btn btn-hover btn-cancel" onclick="cancelClick()">Cancel</button>
+                {% endif %}
+            </div>
+        </div>
+        <br> <br>
+        <!-- TODO spravna odpoved why -->
+        <p class="why">
+            It is always the latest stable version, because many vulnerabilities have been already patched in the latest releases.
+        </p>
+    </section>
+    
+    
+    
+    
+    
+    
+    
+{% endblock content %}

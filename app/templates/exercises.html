@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Exercise |
+{% endblock %}
+
+{% block content %}
+    <br>
+    <div class="d-flex flex-column flex-wrap">
+        <h1 class="mt-3">Exercise</h1>
+        <h5>This section of the contains exercises with code snippets.</h5>
+        <div class="exercise my-3">
+            <h4 class="m-0 fw-bold">Insecure Deserialization Vulnerability</h4>
+            <!--p class="m-0">The code at the code snippet bellow</p-->
+            <pre>
+                <code class="java">
+                    import java.io.*;
+                    public class SecureDeserializationExample {
+                        public static void main(String[] args) {
+                            try {
+                                FileInputStream fis = new FileInputStream("data.ser");
+                                ObjectInputStream ois = new ObjectInputStream(fis);
+                                // Choose what to add here from select
+                                ois.close();
+                                // Code execution after deserialization
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                </code>
+            </pre>
+            <div class="form-group">
+                <label for="insecDesSel">Choose line of code to make deserialization insecure:</label>
+                <select class="code-select" id="insecDesSel">
+                    <option value="1"></option>
+                    <option value="2">MyObject obj = (MyObject) ois.readObject();</option>
+                    <option value="3">Object obj = ois.readObject();</option>
+                    <option value="4">ArrayList&lt;String&gt; data = (ArrayList&lt;String&gt;) ois.readObject();</option>
+                </select>
+                <button class="btn btn-hover p-1" onclick="evalSelect('insecDesSel', '3')"> Submit </button>
+            </div>
+        </div>
+        <br>
+        <div class="exercise">
+            <h4 class="m-0 fw-bold">SQL Injection</h4>
+            <p class="m-0"></p>
+            <div class="d-flex flex-wrap">
+                <pre>
+                    <code class="java">
+                        String username = getRequestParameter("username");
+                        String password  = getRequestParameter("password");
+                        
+                        String query = 
+                            "SELECT * FROM users WHERE 
+                                username = '" + username + "' AND 
+                                password = '" + password + "'";
+                        ResultSet resultSet = executeQuery(query);
+                    </code>
+                </pre>
+                <pre>
+                    <code class="java">
+                        String username = getRequestParameter("username");
+                        String password = getRequestParameter("password");
+                        
+                        String query = "SELECT * FROM users WHERE username = ? AND password = ?";
+                        PreparedStatement statement = connection.prepareStatement(query);
+                        statement.setString(1, username);
+                        statement.setString(2, password);
+                        
+                        ResultSet resultSet = statement.executeQuery();
+                    </code>
+                </pre>
+            </div>
+            <div class="form-group">
+                <label for="sql">Choose which of one the code snippets is more secure:</label>
+                <select class="code-select" id="sql">
+                    <option value="1"></option>
+                    <option value="2">(First) Left one</option>
+                    <option value="3">(Second) Right one</option>
+                </select>
+                <button class="btn btn-hover p-1" onclick="evalSelect('sql', '2')"> Submit </button>
+            </div>
+        </div> 
+        <br>
+        <div class="exercise">
+            <h4 class="m-0 fw-bold">Cross-Site Scripting (XSS)</h4>
+            <p class="m-0"></p>
+            <pre>
+                <code class="java">
+                    String userInput = getRequestParameter("input");
+                    // Choose what to add here from select
+                    out.println(&quot;&lt;div&gt;&quot; + userInput + &quot;&lt;/div&gt;&quot;);
+                </code>
+            </pre>
+            <div class="form-group">
+                <label for="xss">Choose a line of code to sanitize user input:</label>
+                <select class="code-select" id="xss">
+                    <option value="1"></option>
+                    <option value="2">String sanitizedInput = StringEscapeUtils.removeHtmlTags(userInput);</option>
+                    <option value="3">String sanitizedInput = userInput.replaceAll("<", "&amp;lt;").replaceAll(">", "&amp;gt;");</option>
+                    <option value="4">String sanitizedInput = StringEscapeUtils.escapeHtml4(userInput).replace("'","&amp;#39;");</option>
+                </select>
+                <button class="btn btn-hover p-1" onclick="evalSelect('xss', '4')"> Submit </button>
+            </div>
+        </div> 
+        <br>
+        <div class="exercise">
+            <h4 class="m-0 fw-bold">Cross-Site Request Forgery (CSRF)</h4>
+            <p class="m-0"></p>
+            <pre>
+                <code>
+                    &lt;form action=&quot;/transfer.do&quot; method=&quot;post&quot;&gt;
+                        // Choose what to add here from second select
+                        &lt;input type=&quot;hidden&quot; name=&quot;amount&quot; value=&quot;1000&quot;&gt;
+                        &lt;input type=&quot;submit&quot; value=&quot;Transfer Money&quot;&gt;
+                    &lt;/form&gt;
+                </code>
+            </pre>
+            <div class="form-group">
+                <p class="mb-0" style="font-size: 14pt;">Select right combination of options to prevent CSRF:</p>
+                <label for="csrf1">Replace the fist line of the snippet with:</label>
+                <select class="code-select" id="csrf1">
+                    <option value="1"></option>
+                    <option value="2">Change nothing</option>
+                    <option value="3">&lt;form action=&quot;/transfer.do&quot; method=&quot;get&quot;&gt;</option>
+                    <option value="4">&lt;form action=&quot;/transfer.do&quot; method=&quot;post&quot; referrerpolicy=&quot;strict-origin&quot;&gt;</option>
+                </select>
+                <label for="csrf2">Choose line of code to replace the comment:</label>
+                <select class="code-select" id="csrf2">
+                    <option value="1"></option>
+                    <option value="2">&lt;div class=&quot;g-recaptcha&quot; data-sitekey=&quot;your_site_key&quot;&gt;&lt;/div&gt;</option>
+                    <option value="3">&lt;input type=&quot;hidden&quot; name=&quot;csrf_token&quot; value=&quot;&lt;%= csrfToken %&gt;&quot;&gt;</option>
+                    <option value="4">&lt;input type=&quot;password&quot; name=&quot;password&quot; placeholder=&quot;Enter your password&quot;&gt;</option>
+                </select>
+                <button class="btn btn-hover p-1" onclick="evalSelect2('csrf1', '2', '4', 'csrf2', '3')"> Submit </button>
+            </div>
+        </div> 
+        <br>
+        <div class="exercise">
+            <h4 class="m-0 fw-bold">Unsafe use of reflection</h4>
+            <p class="m-0"></p>
+            <div class="d-flex flex-wrap">
+                <pre>
+                    <code class="java">
+                        public static void main(String[] args) {
+                            try {
+                                Class&lt;?&gt; person = Class.forName(args[0]);
+                                Constructor&lt;?&gt; constructor = person.getDeclaredConstructor();
+                                constructor.setAccessible(true);
+                                Object obj = constructor.newInstance();
+                                Method method = person.getDeclaredMethod("myMethod");
+                                method.invoke(obj);
+                            }
+                            //handle exceptions
+                        }
+                    </code>
+                </pre>
+                <pre>
+                    <code class="java">
+                        public static void main(String[] args) {
+                            try {
+                                Class&lt;?&gt; person = Class.forName(args[0]);
+                                Constructor&lt;?&gt; constructor = person.getDeclaredConstructor();
+                                constructor.setAccessible(true);
+                                Person obj = (Person) constructor.newInstance();
+                                obj.checkAccessControl(request);
+                                Method method = person.getDeclaredMethod("myMethod");
+                                method.invoke(obj);
+                            }
+                            //handle exceptions
+                        }
+                    </code>
+                </pre>
+            </div>
+            <div class="form-group">
+                <label for="reflection">Choose which of one the code snippets is more secure:</label>
+                <select class="code-select" id="reflection">
+                    <option value="1"></option>
+                    <option value="2">(First) Left one</option>
+                    <option value="3">(Second) Right one</option>
+                </select>
+                <button class="btn btn-hover p-1" onclick="evalSelect('reflection', '3')"> Submit </button>
+            </div>
+        </div> 
+    </div>
+    
+{% endblock content %}

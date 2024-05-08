@@ -1,0 +1,26 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+    <!--  Home Section  -->
+    <section id="home">
+        <div class="home-content">
+            <h4 class="display-6">Welcome!</h4>
+            <h1>Learn Secure Java</h1>
+            <h6>This application is an educational tool and was written for Bachelor's Thesis</h6>
+            <p>You can learn basics about Java security and common vulnerabilities by reading articles. Second part of the 
+                application consists of quizzes, that allow you to try to test what have you learned. Finally, the third
+                part consists of practical exercises.</p>
+            <div>
+                <a class="btn btn-hover btn-home" href="{% url 'basics' %}"> Start Reading </a>
+                <a class="btn btn-hover btn-home" href="{% url 'tests' %}"> Take Test </a>
+                <a class="btn btn-hover btn-home" href="{% url 'exercises' %}"> Practise </a>
+            </div>
+           
+        </div>
+    </section>
+    
+  
+    
+{% endblock content %}
+

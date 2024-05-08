@@ -1,0 +1,428 @@
+
+
+body {
+    background-image: linear-gradient( rgba(230, 230, 230, 0.6), rgba(230, 230, 230, 0.2), rgba(230, 230, 230, 0.6)), url("../images/bg.jpg") ;
+    font-family: "Ubuntu", Tahoma, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+/*--------------------------- colorful button ---------------------------------------*/
+.btn-hover {
+    width: 90px;
+    font-size: 16px;
+    color: #fff;
+    cursor: pointer;
+    text-align:center;
+    padding: 4px;
+    border: none;
+    background-size: 300% 100%;
+    background-image: linear-gradient(to right, #e75516, #ff9a44, #ef9d43, #e75516);
+    border-radius: 50px;
+    moz-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+}
+
+.btn-hover:hover {
+    color: #fff;
+    background-position: 100% 0;
+    moz-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+}
+
+.btn-hover:focus {
+    outline: none;
+}
+
+/*-----------------------------------------------------------------------------------------------------*/
+
+.form-bg {
+    background-color: rgba(231,85,22,0.2);
+    border-radius: 25px;
+    padding: 30px 30px 20px;
+}
+
+.form-width-max {
+    width: 100%;
+    max-width: 500px;
+}
+
+a.dropdown-item {
+    --bs-dropdown-link-active-bg: rgba(231,85,22,0.5);
+}
+
+.bullet-list {
+    list-style-type: disc !important;
+    padding-left:1em !important;
+    margin-left:1em;
+}
+
+
+p > code.hljs {
+    display: inline;
+}
+
+.inline{
+    display: inline;
+    padding: 0 !important;
+}
+
+pre {
+    padding: 0;
+    margin: 0 0 -20px;
+}
+
+pre code.hljs {
+    font-size: 1rem;
+}
+
+label{
+    font-size: 14pt;
+    font-weight: 400;
+}
+.code-select{
+    margin-bottom: 10px;
+    margin-top: 10px;
+    font-size: 14pt;
+    outline: 0;
+    border: 1px solid rgba(230,85,22,0.2);
+    padding: 4px;
+    border-radius: 9px;
+}
+
+.code-select.correct{
+    border: 2px solid green;
+    background: rgba(0,128,0,0.2);
+}
+
+.code-select.incorrect{
+    border: 2px solid red;
+    background: rgba(128,0,0,0.2);
+}
+
+
+@media (max-width: 991px) {
+    .sidebar {
+        background-color: rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(10px);
+    }
+
+    .navbar-nav > li > .dropdown-menu {
+        background-color: rgba(255, 255, 255, 0.01) !important;
+        backdrop-filter: blur(10px);
+        border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+        padding-bottom: 25px;
+        margin-bottom: 25px;
+    }
+
+    .dropdown-header {
+        color: #333333;
+    }
+
+    .respon-border{
+      border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+      padding-bottom: 25px;
+      margin-bottom: 25px;
+    }
+}
+
+/*------------------------------- History Table -----------------------------------------*/
+#table-custom {
+    --bs-table-bg: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(6px);
+    box-shadow: 0 .2rem .5rem rgba(0, 0, 0, 0.3);
+    border-radius: 0.8rem;
+}
+
+#thead-custom{
+    --bs-table-bg: rgba(231, 85, 22, 0.1);
+    border-top-left-radius: 0.8rem;
+    border-top-right-radius: 0.8rem;
+}
+
+#tbody-custom{
+    --bs-tbody-bg: rgba(255, 255, 255, 0.2);
+}
+
+/*------------------------------- Footer -----------------------------------------*/
+
+.site-body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+.page-container {
+    flex: 1;
+}
+
+.content-center {
+    position: absolute;
+    top: 30%;
+    left: 40%;
+    transform: translate(-50%, -50%);
+}
+
+/*-------------------------------Home page -----------------------------------------*/
+
+#home {
+  width: 100%;
+  padding: 155px 10% 70px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.home-content h1 {
+  margin: 10px 0;
+  font-size: 36px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.btn-home {
+    width: 180px;
+    font-weight: bolder;
+    padding: 15px 30px;
+    margin: 15px;
+}
+
+/*------------------------------- Tests -----------------------------------------*/
+
+.test-container {
+    display: flex;
+    height: 100vh;
+    width: 200%;
+}
+
+.test-standards {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.test-standards .test-box {
+    position: relative;
+    width: 500px;
+    background: rgba(231,85,22,0.1);
+    border: 2px solid rgba(231,85,22,0.5);
+    border-radius: 6px;
+    display: none;
+    flex-direction: column;
+    padding: 20px 30px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.test-standards .test-box.active {
+    opacity: 1;
+    display: flex;
+    pointer-events: auto;
+}
+
+.test-box .test-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 2px solid rgba(231,85,22,0.5);
+}
+
+.test-header .header-score {
+    background: rgba(231,85,22,0.5);
+    border-radius: 5px;
+    color: #fff;
+    padding: 7px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.test-box .question-text {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.option-list .option {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    border: 2px solid rgba(231,85,22,0.5);
+    border-radius: 5px;
+    font-size: 17px;
+    margin: 15px 0;
+    cursor: pointer;
+    transition: 0.3ms;
+}
+
+.option-list .option:hover {
+    background: rgba(231,85,22,0.5);
+}
+
+.option-list .option.correct {
+    border: 2px solid green;
+    color: green;
+}
+
+.option-list .option.incorrect {
+    border: 2px solid red;
+    color: red;
+}
+
+.option-list .option.disabled {
+    pointer-events: none;
+}
+
+.test-box .test-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 2px solid rgba(231,85,22,0.5);
+    padding-top: 20px;
+}
+
+.test-standards .result-box {
+    background: rgba(231,85,22,0.1);
+    border: 2px solid rgba(231,85,22,0.5);
+    border-radius: 6px;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 30px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.test-standards .result-box.active {
+    opacity: 1;
+    display: flex;
+    pointer-events: auto;
+}
+
+.result-box .percentage-box {
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0 40px;
+}
+
+.percentage-box .progress-circle {
+    position: relative;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background: conic-gradient(rgb(231,85,22) 3.6deg, rgba(255,255,255,0.5) 0deg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.percentage-box .progress-circle::before {
+    content: '';
+    position: absolute;
+    width: 210px;
+    height: 210px;
+    border-radius: 50%;
+    background: rgb(240, 225, 218);
+}
+
+.progress-val {
+    position: relative;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.score-text {
+    font-size: 25px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.btn-test {
+    width: 235px;
+    height: 90px;
+    margin: 10px;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+@media screen and (max-width: 996px) {
+    .btn-test {
+        width: 150px;
+        height: 90px;
+        margin: 10px;
+        font-size: 15px;
+        font-weight: bold;
+    }
+}
+
+@media screen and (max-width: 520px) {
+    .test-standards .test-box {
+        width: 80vw;
+        flex-direction: column;
+        padding: 20px 30px;
+    }
+
+    .test-box .test-header {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .test-header .header-score {
+        font-size: 15px;
+    }
+
+    .test-box .question-text {
+        font-size: 20px;
+        font-weight: bold;
+    }
+}
+
+@media screen and (max-width: 380px) {
+    .test-box .test-footer {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .test-standards .result-box {
+        padding: 20px 0;
+    }
+
+    .result-box .percentage-box {
+        width: 80vw;
+    }
+
+    .percentage-box .progress-circle {
+        width: 210px;
+        height: 210px;
+    }
+
+    .percentage-box .progress-circle::before {
+        width: 170px;
+        height: 170px;
+    }
+}
+
+.why {
+    background-color:#eeeeee;
+    border:2px solid black;
+    border-radius: 15px;
+    padding:20px;
+    display: none;
+}
+
+.why.active {
+    display: block;
+}
