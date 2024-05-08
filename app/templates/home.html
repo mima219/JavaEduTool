@@ -1,5 +1,10 @@
-
 {% extends "base.html" %}
+
+{% comment %} 
+    author: Michaela Jalakšová
+    date: May 2024
+    description: Home view template
+{% endcomment %}
 
 {% block content %}
     <!--  Home Section  -->
@@ -16,11 +21,7 @@
                 <a class="btn btn-hover btn-home" href="{% url 'tests' %}"> Take Test </a>
                 <a class="btn btn-hover btn-home" href="{% url 'exercises' %}"> Practise </a>
             </div>
-           
         </div>
     </section>
-    
-  
-    
 {% endblock content %}
 

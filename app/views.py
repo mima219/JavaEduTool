@@ -1,9 +1,14 @@
+"""
+    author: Michaela Jalakšová
+    date: May 2024
+"""
+
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import CustomUserRegisterForm, UserUpdateForm, ProfileUpdateForm
-from .models import TestRecord, Profile
+from .models import TestRecord
 import json
 from django.http import JsonResponse
 

@@ -1,3 +1,8 @@
+"""
+    author: Michaela Jalakšová
+    date: May 2024
+"""
+
 from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views

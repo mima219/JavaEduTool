@@ -1,3 +1,9 @@
+/*
+    author: Michaela Jalakšová
+    date: May 2024
+    description: question for the Common vulnerabilities test
+*/
+
 let commonData = [
     {
         number: 1,

@@ -1,4 +1,8 @@
-
+/*
+    author: Michaela Jalakšová
+    date: May 2024
+    description: custom javascript for the application
+*/
 
 $('p code').each(function(i, inline) {
    hljs.highlightElement(inline);
@@ -127,15 +131,12 @@ function saveClick() {
     // which test
     if (testBasic) {
         finalTitle = 'Basics';
-        console.log('basics clicked');
     }
     else if (testCommon) {
         finalTitle = 'Common Vulnerabilities';
-        console.log('commons clicked');
     }
     else if (testGuidelines) {
         finalTitle = 'Guidelines and Standards';
-        console.log('guidelines');
     }
     else {
         console.log('error: no test chosen');

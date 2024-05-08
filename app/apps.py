@@ -1,5 +1,4 @@
 from django.apps import AppConfig
-# from .signals import create_profile, save_profile as app_signal
 
 
 class MyAppConfig(AppConfig):

@@ -1,3 +1,9 @@
+/*
+    author: Michaela Jalakšová
+    date: May 2024
+    description: question for the Standards and Gudelines test
+*/
+
 let guidesData = [
     {
         number: 1,

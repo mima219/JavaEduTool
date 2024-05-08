@@ -1,3 +1,9 @@
+/*
+    author: Michaela Jalakšová
+    date: May 2024
+    description: question for the Basics test
+*/
+
 let basicsData = [
     {
         number: 1,

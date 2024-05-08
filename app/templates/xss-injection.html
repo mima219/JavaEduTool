@@ -1,5 +1,11 @@
 {% extends "base.html" %}
 
+{% comment %} 
+    author: Michaela Jalakšová
+    date: May 2024
+    description: View template of Cross-site scripting article
+{% endcomment %}
+
 {% block title %}
     Cross-site scripting |
 {% endblock %}
@@ -164,7 +170,7 @@
                 against cross-site scripting. The OWASP Enterprise Security API (ESAPI) is a web 
                 application security control library that includes more than just XSS protection but
                 is currently not well-maintained. OWASP Java encoder has similar functionality to ESAPI's
-                encoder and it is recommended to use it instead.
+                encoder, and it is recommended to use it instead.
             </p>
             <ul class="bullet-list">Other methods of cross-site scripting prevention are:
                 <li>Sanitization of HTML – When an application needs to store and render raw HTML, 
@@ -180,11 +186,6 @@
                     JavaScript can be loaded and executed.
                 </li>
             </ul>
-            <p></p>
-            <p></p>
-            <p></p>
-            <p></p>
-            <p></p>
             <br><br>
         </div>
     </div>
